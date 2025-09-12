@@ -2,47 +2,73 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video + VAST Iklan</title>
-  <link href="https://vjs.zencdn.net/7.21.1/video-js.css" rel="stylesheet" />
+  <title>Video + Iklan ExoClick</title>
+  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background: #111;
+      background: #0f172a;
       color: #fff;
       font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      text-align: center;
     }
+
+    /* Wrapper video biar selalu center */
     .video-container {
-      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 70vh;
+      margin: 10px auto;
+    }
+
+    .video-js {
+      width: 80%;
       max-width: 800px;
-      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* Banner iklan atas & bawah */
+    .ad-top,
+    .ad-bottom {
+      margin: 10px auto;
       text-align: center;
     }
-    video {
-      border-radius: 10px;
-    }
-    .banner-top, .banner-bottom {
-      margin: 10px 0;
-      text-align: center;
-    }
-    .floating-ad {
+
+    /* Widget pojok kanan bawah */
+    .ad-corner {
       position: fixed;
       bottom: 10px;
       right: 10px;
       z-index: 9999;
     }
+
+    /* Responsive: biar iklan full width di HP */
+    @media (max-width: 768px) {
+      .video-js {
+        width: 100% !important;
+        height: auto !important;
+      }
+
+      .ad-top ins,
+      .ad-bottom ins,
+      .ad-corner ins {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Iklan Banner Atas -->
-  <div class="banner-top">
+  <!-- Iklan Atas -->
+  <div class="ad-top">
     <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
     <ins class="eas6a97888e20" data-zoneid="5721014"></ins>
     <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
@@ -50,70 +76,59 @@
 
   <!-- Video Player -->
   <div class="video-container">
-    <video
-      id="myVideo"
-      class="video-js vjs-default-skin"
-      controls
-      preload="auto"
-      width="800"
-      height="450"
-      playsinline
-      data-setup='{}'>
-      <!-- Dummy Video biar ga error -->
-      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+    <video id="videoPlayer" class="video-js vjs-big-play-centered" controls preload="auto">
+      <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
     </video>
   </div>
 
-  <!-- Iklan Banner Bawah -->
-  <div class="banner-bottom">
+  <!-- Iklan Bawah -->
+  <div class="ad-bottom">
     <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
     <ins class="eas6a97888e20" data-zoneid="5721014"></ins>
     <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
   </div>
 
-  <!-- Floating Ad pojok kanan bawah -->
-  <div class="floating-ad">
+  <!-- Iklan Pojok Kanan Bawah -->
+  <div class="ad-corner">
     <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
     <ins class="eas6a97888e31" data-zoneid="5720040"></ins>
     <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
   </div>
 
-  <!-- Video.js + Ads Plugin -->
-  <script src="https://vjs.zencdn.net/7.21.1/video.min.js"></script>
-  <script src="https://unpkg.com/videojs-contrib-ads@6.9.0/dist/videojs-contrib-ads.min.js"></script>
-  <script src="https://unpkg.com/videojs-ima@1.9.0/dist/videojs.ima.min.js"></script>
+  <!-- Script Video.js -->
+  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+  <script src="https://unpkg.com/videojs-contrib-ads/dist/videojs-contrib-ads.min.js"></script>
+  <script src="https://unpkg.com/videojs-ima/dist/videojs.ima.min.js"></script>
 
   <script>
-    var player = videojs('myVideo');
+    var player = videojs('videoPlayer');
 
-    // VAST tag ExoClick
-    var vastTag = "https://s.magsrv.com/v1/vast.php?idzone=5720072";
+    // Aktifkan plugin ads
+    player.ready(function () {
+      player.ads();
 
-    // Setup plugin IMA untuk VAST
-    player.ima({
-      id: 'myVideo',
-      adTagUrl: vastTag,
-      debug: true
+      // Load IMA SDK (Google) untuk VAST
+      player.ima({
+        id: 'videoPlayer',
+        adTagUrl: 'https://s.magsrv.com/v1/vast.php?idzone=5720072'
+      });
+
+      // Setiap 30 detik, coba tayangkan iklan
+      setInterval(() => {
+        if (!player.paused()) {
+          player.ima.changeAdTag('https://s.magsrv.com/v1/vast.php?idzone=5720072');
+          player.ima.requestAds();
+          player.ima.initializeAdDisplayContainer();
+          player.play();
+        }
+      }, 30000);
+
+      // Auto loop video
+      player.on('ended', function () {
+        player.currentTime(0);
+        player.play();
+      });
     });
-
-    // Jalankan iklan preroll
-    player.on('ready', function() {
-      player.ima.initializeAdDisplayContainer();
-      player.ima.requestAds();
-      player.play();
-    });
-
-    // Auto loop konten kalau habis
-    player.on('ended', function() {
-      player.currentTime(0);
-      player.play();
-    });
-
-    // Mid-roll tiap 30 detik
-    setInterval(() => {
-      player.ima.requestAds();
-    }, 30000);
   </script>
-
 </body>
 </html>
