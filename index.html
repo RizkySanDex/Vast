@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video + Ads</title>
+  <style>
+    body {
+      background: #0f172a;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 15px;
+    }
+    .ad-container {
+      margin: 10px auto;
+      text-align: center;
+      width: 100%;
+    }
+    .video-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 100%;
+      margin: 15px auto;
+      flex-direction: column;
+    }
+    video {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 8px;
+      background: #000;
+    }
+    /* Floating Ads pojok kanan bawah */
+    .floating-ad {
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Widget Atas -->
+  <div class="ad-container">
+    <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+    <ins class="eas6a97888e20" data-zoneid="5721014"></ins>
+    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+  </div>
+
+  <!-- Video Player -->
+  <div class="video-container">
+    <video id="mainVideo" controls autoplay muted>
+      <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+      Browser kamu tidak mendukung video tag.
+    </video>
+
+    <!-- VAST Ads -->
+    <video id="vastAd" style="display:none;" controls></video>
+  </div>
+
+  <!-- Widget Bawah -->
+  <div class="ad-container">
+    <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+    <ins class="eas6a97888e20" data-zoneid="5721014"></ins>
+    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+  </div>
+
+  <!-- Floating Ads pojok kanan bawah -->
+  <div class="floating-ad">
+    <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+    <ins class="eas6a97888e31" data-zoneid="5720040"></ins>
+    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+  </div>
+
+  <script>
+    const mainVideo = document.getElementById("mainVideo");
+    const vastAd = document.getElementById("vastAd");
+
+    // Loop manual biar video utama mulai ulang dari awal
+    mainVideo.addEventListener("ended", () => {
+      mainVideo.currentTime = 0;
+      mainVideo.play();
+    });
+
+    function playVAST() {
+      mainVideo.style.display = "none";
+      vastAd.style.display = "block";
+
+      vastAd.src = "https://s.magsrv.com/v1/vast.php?idzone=5720072";
+      vastAd.play().catch(err => console.log("Ad autoplay blocked:", err));
+
+      vastAd.onended = () => {
+        vastAd.style.display = "none";
+        mainVideo.style.display = "block";
+        mainVideo.play();
+      };
+    }
+
+    // Muncul iklan VAST tiap 30 detik
+    setInterval(() => {
+      if (vastAd.style.display === "block") return; 
+      playVAST();
+    }, 30000);
+  </script>
+
+</body>
+</html>
