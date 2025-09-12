@@ -2,11 +2,9 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Video Ultra Plus++ Compact + Auto Refresh</title>
+<title>Video Ultra Plus++ Countdown Animasi ala YouTube</title>
 
-<!-- Auto refresh halaman tiap 1 menit -->
 <meta http-equiv="refresh" content="60">
-
 <link href="https://vjs.zencdn.net/8.0.4/video-js.css" rel="stylesheet" />
 
 <style>
@@ -21,7 +19,7 @@ body {
 .player-wrapper {
   position: relative;
   width: 100%;
-  height: calc(100vh - 10px); /* agar lebih rapat dengan widget */
+  height: calc(100vh - 10px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,25 +35,34 @@ body {
   transition: opacity 0.5s ease;
 }
 
-#countdown {
+.countdown-circle {
   position: absolute;
   top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.6);
-  color: #fff;
-  padding: 5px 12px;
-  border-radius: 5px;
-  font-size: 16px;
+  left: 10px;
+  width: 50px;
+  height: 50px;
   z-index: 10000;
   display: none;
 }
+
+.countdown-circle svg {
+  transform: rotate(-90deg);
+}
+
+.countdown-circle circle {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.countdown-bg { stroke: rgba(255,255,255,0.3); }
+.countdown-fg { stroke: #ff0000; stroke-dasharray: 314; stroke-dashoffset: 314; transition: stroke-dashoffset 1s linear; }
 
 .ad-top, .ad-bottom {
   width: 100%;
   text-align: center;
   z-index: 10;
-  margin: 2px 0; /* jarak minimal */
+  margin: 2px 0;
   padding: 0;
 }
 
@@ -87,7 +94,7 @@ body {
   }
   .player-wrapper {
     margin: 0;
-    height: calc(100vh - 8px); /* rapatkan lagi */
+    height: calc(100vh - 8px);
   }
   .video-js .vjs-control-bar {bottom:50px !important;}
 }
@@ -107,7 +114,14 @@ body {
     <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
     Browser kamu tidak mendukung video.
   </video>
-  <div id="countdown">Ad: 5s</div>
+
+  <!-- Countdown Animasi -->
+  <div class="countdown-circle" id="countdownCircle">
+    <svg width="50" height="50">
+      <circle class="countdown-bg" cx="25" cy="25" r="25"></circle>
+      <circle class="countdown-fg" cx="25" cy="25" r="25"></circle>
+    </svg>
+  </div>
 </div>
 
 <!-- Widget Ads Bottom -->
@@ -124,14 +138,18 @@ body {
   <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
 </div>
 
-<!-- Video.js + VAST -->
 <script src="https://vjs.zencdn.net/8.0.4/video.min.js"></script>
 <script src="https://unpkg.com/videojs-contrib-ads@6.9.0/dist/videojs-contrib-ads.min.js"></script>
 <script src="https://unpkg.com/videojs-ima@1.11.0/dist/videojs.ima.min.js"></script>
 
 <script>
 const player = videojs('superVideo');
-const countdown = document.getElementById('countdown');
+const countdownCircle = document.getElementById('countdownCircle');
+const fgCircle = countdownCircle.querySelector('.countdown-fg');
+const radius = 25;
+const circumference = 2 * Math.PI * radius;
+fgCircle.style.strokeDasharray = circumference;
+fgCircle.style.strokeDashoffset = circumference;
 
 // Setup VAST pre-roll
 player.ima({
@@ -143,27 +161,23 @@ player.ready(function(){
   player.ima.initializeAdDisplayContainer();
   player.ima.requestAds();
 
-  // Countdown pre-roll
   player.on('adstart', function(){
-    let adsManager = player.ima.getAdsManager();
-    if(!adsManager) return;
-    let duration = Math.ceil(adsManager.getRemainingTime()) || 5;
-    countdown.style.display='block';
-    countdown.innerText = `Ad: ${duration}s`;
-
+    countdownCircle.style.display = 'block';
+    let duration = Math.ceil(player.ima.getAdsManager().getRemainingTime()) || 5;
+    let offset = circumference;
     const interval = setInterval(()=>{
       duration -=1;
-      countdown.innerText = `Ad: ${Math.ceil(duration)}s`;
+      offset = circumference * (duration/5);
+      fgCircle.style.strokeDashoffset = offset;
       if(duration<=0){
-        countdown.style.display='none';
+        countdownCircle.style.display='none';
         clearInterval(interval);
       }
     },1000);
   });
 
-  // Auto-refresh corner ad via AdProvider push
   player.on('adend', function(){
-    countdown.style.display='none';
+    countdownCircle.style.display='none';
     if(window.AdProvider) {
       AdProvider.push({"serve": {}});
     }
