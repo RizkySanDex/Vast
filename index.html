@@ -1,224 +1,189 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Video Super Canggih + VAST + Countdown + Auto-Refresh Corner Ad</title>
+<meta charset="UTF-8">
+<title>Video Ultra Plus++ Lengkap + VAST + Countdown + Auto Refresh Corner Ad</title>
 
-  <!-- Video.js CSS -->
-  <link href="https://vjs.zencdn.net/8.0.4/video-js.css" rel="stylesheet" />
+<link href="https://vjs.zencdn.net/8.0.4/video-js.css" rel="stylesheet" />
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #0f172a;
-      font-family: Arial, sans-serif;
-      color: #fff;
-    }
+<style>
+body {
+  margin:0;
+  padding:0;
+  background:#0f172a;
+  font-family: Arial, sans-serif;
+  color:#fff;
+}
 
-    .player-wrapper {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
+.player-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
 
-    .video-js {
-      width: 100%;
-      height: 100%;
-      max-height: 100vh;
-      z-index: 1;
-      transition: opacity 0.5s ease;
-    }
+.video-js {
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  z-index: 1;
+  transition: opacity 0.5s ease;
+}
 
-    /* Countdown overlay */
-    #countdown {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      padding: 5px 12px;
-      border-radius: 5px;
-      font-size: 18px;
-      z-index: 10000;
-      display: none;
-    }
+#countdown {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 18px;
+  z-index: 10000;
+  display: none;
+}
 
-    .ad-top, .ad-bottom {
-      width: 100%;
-      text-align: center;
-      z-index: 10;
-      margin: 5px 0;
-    }
+.ad-top, .ad-bottom {
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+  margin: 5px 0;
+}
 
-    .ad-corner {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 10;
-      pointer-events: auto;
-    }
+.ad-corner {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+  pointer-events: auto;
+}
 
-    .video-js .vjs-control-bar {
-      z-index: 2;
-      bottom: 60px !important;
-    }
+.video-js .vjs-control-bar {
+  z-index: 2;
+  bottom: 60px !important;
+}
 
-    @media (max-width: 768px) {
-      .ad-top,
-      .ad-bottom,
-      .ad-corner {
-        left: 0;
-        transform: none;
-        width: 100%;
-        text-align: center;
-      }
-
-      .ad-top ins,
-      .ad-bottom ins,
-      .ad-corner ins {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-      }
-
-      .video-js .vjs-control-bar {
-        bottom: 60px !important;
-      }
-    }
-  </style>
+@media(max-width:768px){
+  .ad-top,.ad-bottom,.ad-corner {
+    width: 100%;
+    text-align: center;
+  }
+  .ad-top ins,
+  .ad-bottom ins,
+  .ad-corner ins {
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    height:auto !important;
+  }
+  .video-js .vjs-control-bar {bottom:60px !important;}
+}
+</style>
 </head>
 <body>
 
-  <!-- Widget Ads -->
-  <div class="ad-top">
-    <script async src="https://a.magsrv.com/ad-provider.js"></script>
-    <ins class="eas6a97888e20" data-zoneid="5721014"></ins>
-    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-  </div>
+<!-- Widget Ads Top -->
+<div class="ad-top" id="adTop">
+  <script async src="https://a.magsrv.com/ad-provider.js"></script>
+  <ins class="eas6a97888e20" data-zoneid="5721014"></ins>
+  <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+</div>
 
-  <div class="player-wrapper">
-    <video
-      id="superVideo"
-      class="video-js vjs-default-skin"
-      controls
-      muted
-      autoplay
-      preload="auto"
-      loop
-      style="opacity:1;"
-    >
-      <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-      Browser kamu tidak mendukung video.
-    </video>
+<div class="player-wrapper">
+  <video id="superVideo" class="video-js vjs-default-skin" controls muted autoplay preload="auto" loop style="opacity:1;">
+    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+    Browser kamu tidak mendukung video.
+  </video>
+  <div id="countdown">Ad: 5s</div>
+</div>
 
-    <!-- Countdown overlay -->
-    <div id="countdown">Ad: 5s</div>
-  </div>
+<!-- Widget Ads Bottom -->
+<div class="ad-bottom" id="adBottom">
+  <script async src="https://a.magsrv.com/ad-provider.js"></script>
+  <ins class="eas6a97888e20" data-zoneid="5721014"></ins>
+  <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+</div>
 
-  <div class="ad-bottom">
-    <script async src="https://a.magsrv.com/ad-provider.js"></script>
-    <ins class="eas6a97888e20" data-zoneid="5721014"></ins>
-    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-  </div>
+<!-- Corner Ad (pojok kanan bawah) -->
+<div class="ad-corner" id="cornerAd">
+  <script async src="https://a.magsrv.com/ad-provider.js"></script>
+  <ins class="eas6a97888e31" data-zoneid="5720040"></ins>
+  <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+</div>
 
-  <!-- Iklan Corner (auto-refresh dari video iklan pre-roll) -->
-  <div class="ad-corner" id="cornerAd">
-    <script async src="https://a.magsrv.com/ad-provider.js"></script>
-    <ins class="eas6a97888e31" data-zoneid="5720040"></ins>
-    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-  </div>
+<!-- Video.js + VAST -->
+<script src="https://vjs.zencdn.net/8.0.4/video.min.js"></script>
+<script src="https://unpkg.com/videojs-contrib-ads@6.9.0/dist/videojs-contrib-ads.min.js"></script>
+<script src="https://unpkg.com/videojs-ima@1.11.0/dist/videojs.ima.min.js"></script>
 
-  <!-- Video.js + VAST -->
-  <script src="https://vjs.zencdn.net/8.0.4/video.min.js"></script>
-  <script src="https://unpkg.com/videojs-contrib-ads@6.9.0/dist/videojs-contrib-ads.min.js"></script>
-  <script src="https://unpkg.com/videojs-ima@1.11.0/dist/videojs.ima.min.js"></script>
+<script>
+const playlist = [
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
+];
 
-  <script>
-    const playlist = [
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
-    ];
+let currentVideo = 0;
+const player = videojs('superVideo');
+const videoEl = document.getElementById('superVideo');
+const countdown = document.getElementById('countdown');
 
-    let currentVideo = 0;
-    const player = videojs('superVideo');
-    const videoEl = document.getElementById('superVideo');
-    const cornerAd = document.getElementById('cornerAd');
-    const countdown = document.getElementById('countdown');
+// Setup VAST pre-roll
+player.ima({
+  adTagUrl: 'https://s.magsrv.com/v1/vast.php?idzone=5720036',
+  debug: true
+});
 
-    // Setup VAST pre-roll
-    player.ima({
-      adTagUrl: 'https://s.magsrv.com/v1/vast.php?idzone=5720036',
-      debug: true
-    });
+// Inisialisasi player
+player.ready(function(){
+  player.ima.initializeAdDisplayContainer();
+  player.ima.requestAds();
 
-    // Fungsi auto-refresh corner ad dengan cara aman
-    function refreshCornerAd() {
-      cornerAd.innerHTML = '';
-      const ins = document.createElement('ins');
-      ins.className = 'eas6a97888e31';
-      ins.dataset.zoneid = '5720040';
-      cornerAd.appendChild(ins);
+  // Countdown pre-roll
+  player.on('adstart', function(){
+    let adsManager = player.ima.getAdsManager();
+    if(!adsManager) return;
+    let duration = Math.ceil(adsManager.getRemainingTime()) || 5;
+    countdown.style.display='block';
+    countdown.innerText = `Ad: ${duration}s`;
 
-      const script = document.createElement('script');
-      script.src = 'https://a.magsrv.com/ad-provider.js';
-      script.async = true;
-      cornerAd.appendChild(script);
+    const interval = setInterval(()=>{
+      duration -=1;
+      countdown.innerText = `Ad: ${Math.ceil(duration)}s`;
+      if(duration<=0){
+        countdown.style.display='none';
+        clearInterval(interval);
+      }
+    },1000);
+  });
 
-      const scriptPush = document.createElement('script');
-      scriptPush.textContent = '(AdProvider = window.AdProvider || []).push({"serve": {}});';
-      cornerAd.appendChild(scriptPush);
+  // Auto-refresh corner ad setelah pre-roll selesai
+  player.on('adend', function(){
+    countdown.style.display='none';
+    // Memanggil ulang AdProvider push untuk corner ad
+    if(window.AdProvider) {
+      AdProvider.push({"serve": {}});
     }
+  });
 
-    player.ready(function() {
-      player.ima.initializeAdDisplayContainer();
+  // Playlist multi-video + fade
+  player.on('ended', function(){
+    videoEl.style.opacity = 0;
+    setTimeout(()=>{
+      currentVideo++;
+      if(currentVideo>=playlist.length) currentVideo=0;
+      player.src({type:'video/mp4', src:playlist[currentVideo]});
+      player.play();
       player.ima.requestAds();
-
-      // Countdown saat pre-roll
-      player.on('adstart', function() {
-        let adsManager = player.ima.getAdsManager();
-        if (!adsManager) return;
-        let duration = Math.ceil(adsManager.getRemainingTime()) || 5;
-        countdown.style.display = 'block';
-        countdown.innerText = `Ad: ${duration}s`;
-
-        const interval = setInterval(() => {
-          duration -= 1;
-          countdown.innerText = `Ad: ${Math.ceil(duration)}s`;
-          if (duration <= 0) {
-            countdown.style.display = 'none';
-            clearInterval(interval);
-          }
-        }, 1000);
-      });
-
-      // Saat pre-roll selesai
-      player.on('adend', function() {
-        countdown.style.display = 'none';
-        refreshCornerAd(); // auto-refresh corner ad dari video iklan
-      });
-
-      // Transisi halus antar video playlist
-      player.on('ended', function() {
-        videoEl.style.opacity = 0;
-        setTimeout(() => {
-          currentVideo++;
-          if(currentVideo >= playlist.length) currentVideo = 0;
-          player.src({type: 'video/mp4', src: playlist[currentVideo]});
-          player.play();
-          player.ima.requestAds();
-          videoEl.style.opacity = 1;
-        }, 500);
-      });
-    });
-  </script>
+      videoEl.style.opacity = 1;
+    },500);
+  });
+});
+</script>
 
 </body>
 </html>
