@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Video Ultra Plus++ Auto Refresh + Jarak Rapat HP</title>
+<title>Video Ultra Plus++ Compact + Auto Refresh</title>
 
 <!-- Auto refresh halaman tiap 1 menit -->
 <meta http-equiv="refresh" content="60">
@@ -21,7 +21,7 @@ body {
 .player-wrapper {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 10px); /* agar lebih rapat dengan widget */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,14 +39,14 @@ body {
 
 #countdown {
   position: absolute;
-  top: 20px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0,0,0,0.6);
   color: #fff;
   padding: 5px 12px;
   border-radius: 5px;
-  font-size: 18px;
+  font-size: 16px;
   z-index: 10000;
   display: none;
 }
@@ -55,21 +55,21 @@ body {
   width: 100%;
   text-align: center;
   z-index: 10;
-  margin: 5px 0;
+  margin: 2px 0; /* jarak minimal */
   padding: 0;
 }
 
 .ad-corner {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 10px;
+  right: 10px;
   z-index: 10;
   pointer-events: auto;
 }
 
 .video-js .vjs-control-bar {
   z-index: 2;
-  bottom: 60px !important;
+  bottom: 50px !important;
 }
 
 @media(max-width:768px){
@@ -87,8 +87,9 @@ body {
   }
   .player-wrapper {
     margin: 0;
+    height: calc(100vh - 8px); /* rapatkan lagi */
   }
-  .video-js .vjs-control-bar {bottom:60px !important;}
+  .video-js .vjs-control-bar {bottom:50px !important;}
 }
 </style>
 </head>
@@ -102,7 +103,7 @@ body {
 </div>
 
 <div class="player-wrapper">
-  <video id="superVideo" class="video-js vjs-default-skin" controls muted autoplay preload="auto" loop style="opacity:1;">
+  <video id="superVideo" class="video-js vjs-default-skin" controls muted autoplay preload="auto" style="opacity:1;">
     <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
     Browser kamu tidak mendukung video.
   </video>
@@ -116,7 +117,7 @@ body {
   <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
 </div>
 
-<!-- Corner Ad (pojok kanan bawah) -->
+<!-- Corner Ad -->
 <div class="ad-corner" id="cornerAd">
   <script async src="https://a.magsrv.com/ad-provider.js"></script>
   <ins class="eas6a97888e31" data-zoneid="5720040"></ins>
@@ -129,15 +130,7 @@ body {
 <script src="https://unpkg.com/videojs-ima@1.11.0/dist/videojs.ima.min.js"></script>
 
 <script>
-const playlist = [
-  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
-];
-
-let currentVideo = 0;
 const player = videojs('superVideo');
-const videoEl = document.getElementById('superVideo');
 const countdown = document.getElementById('countdown');
 
 // Setup VAST pre-roll
@@ -146,7 +139,6 @@ player.ima({
   debug: true
 });
 
-// Inisialisasi player
 player.ready(function(){
   player.ima.initializeAdDisplayContainer();
   player.ima.requestAds();
@@ -175,19 +167,6 @@ player.ready(function(){
     if(window.AdProvider) {
       AdProvider.push({"serve": {}});
     }
-  });
-
-  // Playlist multi-video + fade
-  player.on('ended', function(){
-    videoEl.style.opacity = 0;
-    setTimeout(()=>{
-      currentVideo++;
-      if(currentVideo>=playlist.length) currentVideo=0;
-      player.src({type:'video/mp4', src:playlist[currentVideo]});
-      player.play();
-      player.ima.requestAds();
-      videoEl.style.opacity = 1;
-    },500);
   });
 });
 </script>
